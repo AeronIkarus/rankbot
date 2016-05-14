@@ -1,22 +1,28 @@
 package main
 
 import (
+	"flag"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/nhooyr/color/log"
 )
 
-const (
-	email   = "anmol@aubble.com"
-	pass    = "566348aA"
-	guild   = "ezekiel"
-	channel = "izi"
-	message = "_"
+var (
+	email    = flag.String("email", "", "account email")
+	pass     = flag.String("pass", "", "account password")
+	guild    = flag.String("guild", "", "account guild")
+	channel  = flag.String("chan", "", "guild channel")
+	message  = flag.String("msg", "_", "message to be sent")
+	interval = flag.Int64("int", 1, "interval between messages in minutes")
 )
 
 func main() {
-	s, err := discordgo.New(email, pass)
+	flag.Parse()
+	if *email == "" || *pass == "" {
+		log.Fatalln("please provide an email and password")
+	}
+	s, err := discordgo.New(*email, *pass)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -39,7 +45,7 @@ func findGuild(s *discordgo.Session) *discordgo.Guild {
 	}
 	log.Println("got guilds")
 	for _, g := range gs {
-		if g.Name == guild {
+		if g.Name == *guild {
 			log.Println("found guild")
 			return g
 		}
@@ -54,7 +60,7 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 	}
 	log.Println("got channels")
 	for _, ch := range chs {
-		if ch.Name == channel {
+		if ch.Name == *channel {
 			log.Println("found channel")
 			return ch.ID
 		}
@@ -63,8 +69,8 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 }
 
 func sendLoop(s *discordgo.Session, id string) {
-	for t := time.Tick(time.Minute); ; <-t {
-		_, err := s.ChannelMessageSend(id, message)
+	for t := time.Tick(time.Minute*time.Duration(*interval)); ; <-t {
+		_, err := s.ChannelMessageSend(id, *message)
 		if err != nil {
 			log.Println(err)
 			continue
