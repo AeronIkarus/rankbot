@@ -35,6 +35,7 @@ func main() {
 	if id == "" {
 		log.Fatalln("could not find channel")
 	}
+	go typeLoop(s, id)
 	sendLoop(s, id)
 }
 
@@ -70,11 +71,20 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 
 func sendLoop(s *discordgo.Session, id string) {
 	for t := time.Tick(time.Minute * time.Duration(*interval)); ; <-t {
-		_, err := s.ChannelMessageSend(id, *message)
-		if err != nil {
+		if _, err := s.ChannelMessageSend(id, *message); err != nil {
 			log.Println(err)
 		} else {
 			log.Println("sent message")
+		}
+	}
+}
+
+func typeLoop(s *discordgo.Session, id string) {
+	for t := time.Tick(time.Millisecond * 500); ; <-t {
+		if err := s.ChannelTyping(id); err != nil {
+			log.Println(err)
+		} else {
+			log.Println("sent typing")
 		}
 	}
 }
