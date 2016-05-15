@@ -69,12 +69,12 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 }
 
 func sendLoop(s *discordgo.Session, id string) {
-	for t := time.Tick(time.Minute*time.Duration(*interval)); ; <-t {
+	for t := time.Tick(time.Minute * time.Duration(*interval)); ; <-t {
 		_, err := s.ChannelMessageSend(id, *message)
 		if err != nil {
 			log.Println(err)
-			continue
+		} else {
+			log.Println("sent message")
 		}
-		log.Println("sent message")
 	}
 }
