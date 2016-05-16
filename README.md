@@ -10,16 +10,16 @@ To avoid flood, mee6 only allows you to gain xp once per minute.
 This bot sends out a message every minute allowing you to rank up very fast.
 
 ## Install
-```
+```zsh
 go get github.com/nhooyr/rankbot
 ```
 
 ## Usage
-```
+```zsh
 rankbot --help
 ```
 
 ### Example usage
-```
+```zsh
 rankbot -email="me@domain.com" -pass="secret" -guild="server" -chan="channel" -int=1
 ```
