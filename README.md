@@ -16,7 +16,20 @@ go get github.com/nhooyr/rankbot
 
 ## Usage
 ```zsh
-rankbot --help
+[$] rankbot --help
+Usage of rankbot:
+  -chan string
+        guild channel
+  -email string
+        account email
+  -guild string
+        account guild
+  -int int
+        interval between messages in minutes (default 1)
+  -msg string
+        message to be sent (default "_")
+  -pass string
+        account password
 ```
 
 ### Example usage
