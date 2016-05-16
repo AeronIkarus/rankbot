@@ -14,7 +14,6 @@ var (
 	guild    = flag.String("guild", "", "account guild")
 	channel  = flag.String("chan", "", "guild channel")
 	message  = flag.String("msg", "_", "message to be sent")
-	interval = flag.Int64("int", 1, "interval between messages in minutes")
 )
 
 func main() {
@@ -69,7 +68,7 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 }
 
 func sendLoop(s *discordgo.Session, id string) {
-	for t := time.Tick(time.Minute * time.Duration(*interval)); ; <-t {
+	for t := time.Tick(time.Minute); ; <-t {
 		if _, err := s.ChannelMessageSend(id, *message); err != nil {
 			log.Println(err)
 		} else {

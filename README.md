@@ -34,5 +34,5 @@ Usage of rankbot:
 
 ### Example usage
 ```zsh
-rankbot -email="me@domain.com" -pass="secret" -guild="server" -chan="channel" -int=1
+rankbot -email="me@domain.com" -pass="secret" -guild="server" -chan="channel"
 ```
