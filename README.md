@@ -24,8 +24,6 @@ Usage of rankbot:
         account email
   -guild string
         account guild
-  -int int
-        interval between messages in minutes (default 1)
   -msg string
         message to be sent (default "_")
   -pass string
