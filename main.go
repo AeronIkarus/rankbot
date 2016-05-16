@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	email    = flag.String("email", "", "account email")
-	pass     = flag.String("pass", "", "account password")
-	guild    = flag.String("guild", "", "account guild")
-	channel  = flag.String("chan", "", "guild channel")
-	message  = flag.String("msg", "_", "message to be sent")
+	email   = flag.String("email", "", "account email")
+	pass    = flag.String("pass", "", "account password")
+	guild   = flag.String("guild", "", "guild (server) to join")
+	channel = flag.String("chan", "", "channel to join")
+	message = flag.String("msg", "_", "message to be sent")
 )
 
 func main() {
