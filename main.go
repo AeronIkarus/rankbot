@@ -19,20 +19,30 @@ var (
 func main() {
 	flag.Parse()
 	if *email == "" || *pass == "" {
-		log.Fatalln("please provide an email and password")
+		log.Fatal("please provide an email and password")
 	}
 	s, err := discordgo.New(*email, *pass)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
-	log.Println("logged in")
+	log.Print("logged in")
+	err = s.Open()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = s.UpdateStatus(0, "eecksday")
+	if err != nil {
+		log.Fatal(err)
+	}
+	s.Close()
+	log.Print("updated status")
 	g := findGuild(s)
 	if g == nil {
-		log.Fatalln("could not find guild")
+		log.Fatal("could not find guild")
 	}
 	id := findChannel(s, g)
 	if id == "" {
-		log.Fatalln("could not find channel")
+		log.Fatal("could not find channel")
 	}
 	sendLoop(s, id)
 }
@@ -40,12 +50,12 @@ func main() {
 func findGuild(s *discordgo.Session) *discordgo.Guild {
 	gs, err := s.UserGuilds()
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
-	log.Println("got guilds")
+	log.Print("got guilds")
 	for _, g := range gs {
 		if g.Name == *guild {
-			log.Println("found guild")
+			log.Print("found guild")
 			return g
 		}
 	}
@@ -55,12 +65,12 @@ func findGuild(s *discordgo.Session) *discordgo.Guild {
 func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 	chs, err := s.GuildChannels(g.ID)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
-	log.Println("got channels")
+	log.Print("got channels")
 	for _, ch := range chs {
 		if ch.Name == *channel {
-			log.Println("found channel")
+			log.Print("found channel")
 			return ch.ID
 		}
 	}
@@ -70,9 +80,9 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 func sendLoop(s *discordgo.Session, id string) {
 	for t := time.Tick(time.Minute); ; <-t {
 		if _, err := s.ChannelMessageSend(id, *message); err != nil {
-			log.Println(err)
+			log.Print(err)
 		} else {
-			log.Println("sent message")
+			log.Print("sent message")
 		}
 	}
 }
