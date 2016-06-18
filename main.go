@@ -26,11 +26,6 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Print("logged in")
-	s.AddHandler(ready)
-	err = s.Open()
-	if err != nil {
-		log.Fatal(err)
-	}
 	g := findGuild(s)
 	if g == nil {
 		log.Fatal("could not find guild")
@@ -40,14 +35,6 @@ func main() {
 		log.Fatal("could not find channel")
 	}
 	sendLoop(s, id)
-}
-
-func ready(s *discordgo.Session, event *discordgo.Ready) {
-	err := s.UpdateStatus(0, "eecksday")
-	if err != nil {
-		log.Print(err)
-	}
-	log.Print("updated status")
 }
 
 func findGuild(s *discordgo.Session) *discordgo.Guild {
