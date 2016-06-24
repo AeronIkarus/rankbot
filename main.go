@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	email   = flag.String("email", "", "account email")
-	pass    = flag.String("pass", "", "account password")
-	guild   = flag.String("guild", "", "guild (server) to join")
-	channel = flag.String("chan", "", "channel to join")
-	message = flag.String("msg", "_", "message to be sent")
+	email    = flag.String("email", "", "account email")
+	pass     = flag.String("pass", "", "account password")
+	guild    = flag.String("guild", "", "guild (server) to join")
+	channel  = flag.String("chan", "", "channel to join")
+	message  = flag.String("msg", "_", "message to be sent")
 	interval = flag.Int64("int", 60, "interval between messages in seconds")
 )
 
@@ -27,6 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Print("logged in")
+
 	g := findGuild(s)
 	if g == nil {
 		log.Fatal("could not find guild")
@@ -35,7 +36,14 @@ func main() {
 	if id == "" {
 		log.Fatal("could not find channel")
 	}
-	sendLoop(s, id)
+
+	for t := time.Tick(time.Duration(*interval) * time.Second); ; <-t {
+		if _, err := s.ChannelMessageSend(id, *message); err != nil {
+			log.Print(err)
+		} else {
+			log.Print("sent message")
+		}
+	}
 }
 
 func findGuild(s *discordgo.Session) *discordgo.Guild {
@@ -66,14 +74,4 @@ func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
 		}
 	}
 	return ""
-}
-
-func sendLoop(s *discordgo.Session, id string) {
-	for t := time.Tick(time.Duration(*interval)*time.Second); ; <-t {
-		if _, err := s.ChannelMessageSend(id, *message); err != nil {
-			log.Print(err)
-		} else {
-			log.Print("sent message")
-		}
-	}
 }
