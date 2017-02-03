@@ -46,7 +46,7 @@ func main() {
 	}
 }
 
-func findGuild(s *discordgo.Session) *discordgo.Guild {
+func findGuild(s *discordgo.Session) *discordgo.UserGuild {
 	gs, err := s.UserGuilds()
 	if err != nil {
 		log.Fatal(err)
@@ -61,7 +61,7 @@ func findGuild(s *discordgo.Session) *discordgo.Guild {
 	return nil
 }
 
-func findChannel(s *discordgo.Session, g *discordgo.Guild) string {
+func findChannel(s *discordgo.Session, g *discordgo.UserGuild) string {
 	chs, err := s.GuildChannels(g.ID)
 	if err != nil {
 		log.Fatal(err)
